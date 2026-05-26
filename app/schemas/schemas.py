@@ -98,15 +98,15 @@ class BookmarkBase(BaseModel):
         v = v.strip()
         if not v:
             raise ValueError("Title must not be empty")
-        if len(v) > 500:
-            raise ValueError("Title must be 500 characters or fewer")
+        if len(v) > 200:
+            raise ValueError("Title must be 200 characters or fewer")
         return v
 
     @field_validator("description")
     @classmethod
     def description_length(cls, v: str) -> str:
-        if len(v) > 5000:
-            raise ValueError("Description must be 5000 characters or fewer")
+        if len(v) > 500:
+            raise ValueError("Description must be 500 characters or fewer")
         return v
 
 
@@ -146,15 +146,15 @@ class BookmarkUpdate(BaseModel):
         v = v.strip()
         if not v:
             raise ValueError("Title must not be empty")
-        if len(v) > 500:
-            raise ValueError("Title must be 500 characters or fewer")
+        if len(v) > 200:
+            raise ValueError("Title must be 200 characters or fewer")
         return v
 
     @field_validator("description")
     @classmethod
     def description_length(cls, v: str | None) -> str | None:
-        if v is not None and len(v) > 5000:
-            raise ValueError("Description must be 5000 characters or fewer")
+        if v is not None and len(v) > 500:
+            raise ValueError("Description must be 500 characters or fewer")
         return v
 
     @field_validator("tag_names")
