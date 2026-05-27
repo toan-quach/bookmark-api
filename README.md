@@ -40,6 +40,35 @@ uvicorn app.main:app --reload
 
 The API will be available at http://localhost:8000. Interactive docs at http://localhost:8000/docs.
 
+## Docker deployment
+
+Build and run with Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+To set a custom secret key (recommended for production):
+
+```bash
+SECRET_KEY=my-super-secret docker compose up --build
+```
+
+Or create a `.env` file in the project root:
+
+```
+SECRET_KEY=my-super-secret
+```
+
+The database is stored in a Docker volume (`bookmark-data`) and persists across container restarts. Alembic migrations run automatically on startup.
+
+### Environment variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DATABASE_URL` | `sqlite:////app/data/bookmarks.db` | SQLAlchemy database URL |
+| `SECRET_KEY` | `please-change-this-secret` | Secret key for signing JWT tokens |
+
 ## Running tests
 
 ```bash
@@ -279,3 +308,7 @@ curl -s http://localhost:8000/tags
   {"name": "web", "id": 3}
 ]
 ```
+
+## Quick demo
+
+For a step-by-step walkthrough that exercises every endpoint, see [DEMO.md](DEMO.md).

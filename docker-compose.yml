@@ -1,0 +1,14 @@
+services:
+  api:
+    build: .
+    platform: linux/arm64
+    ports:
+      - "8000:8000"
+    volumes:
+      - bookmark-data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:////app/data/bookmarks.db
+      - SECRET_KEY=${SECRET_KEY:-please-change-this-secret}
+
+volumes:
+  bookmark-data:
