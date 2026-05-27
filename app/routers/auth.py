@@ -11,7 +11,7 @@ from app.schemas.schemas import TokenResponse, UserRead, UserRegister
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/register", response_model=UserRead, status_code=201)
+@router.post("/register", response_model=UserRead, status_code=201, summary="Register a new user")
 def register(payload: UserRegister, db: Session = Depends(get_db)):
     if db.scalar(select(User).where(User.username == payload.username)):
         raise HTTPException(409, "Username already taken")
@@ -28,7 +28,7 @@ def register(payload: UserRegister, db: Session = Depends(get_db)):
     return user
 
 
-@router.post("/login", response_model=TokenResponse)
+@router.post("/login", response_model=TokenResponse, summary="Log in and obtain a JWT token")
 def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.scalar(select(User).where(User.username == form.username))
     if not user or not verify_password(form.password, user.password_hash):

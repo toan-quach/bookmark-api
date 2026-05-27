@@ -195,3 +195,10 @@ class BookmarkRead(BookmarkBase):
     created_at: datetime
     updated_at: datetime
     tags: list[TagRead] = []
+
+
+class PaginatedBookmarks(BaseModel):
+    items: list[BookmarkRead]
+    total: int
+    page: int
+    page_size: int

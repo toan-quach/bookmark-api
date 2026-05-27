@@ -1,13 +1,42 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException
 
 from app.routers import auth, bookmarks, tags, users
 from app.schemas.schemas import ErrorDetail, ErrorResponse
 
 app = FastAPI(
     title="Bookmarks API",
+    summary="A RESTful API for managing personal bookmarks with tagging and search.",
+    description=(
+        "The Bookmarks API lets authenticated users save, organise, and search web bookmarks.\n\n"
+        "## Features\n"
+        "* Full CRUD for bookmarks with tag support\n"
+        "* Filter by tag, keyword search, and date range\n"
+        "* Paginated listing with total count\n"
+        "* JWT-based authentication\n"
+    ),
     version="1.0.0",
+    docs_url="/docs",
+    openapi_tags=[
+        {
+            "name": "auth",
+            "description": "User registration and JWT token issuance.",
+        },
+        {
+            "name": "users",
+            "description": "Current-user profile operations.",
+        },
+        {
+            "name": "bookmarks",
+            "description": "Create, read, update, delete, and search bookmarks.",
+        },
+        {
+            "name": "tags",
+            "description": "Browse and create tags.",
+        },
+    ],
     responses={
         401: {"model": ErrorResponse, "description": "Unauthorized"},
         422: {"model": ErrorResponse, "description": "Validation error"},
@@ -16,8 +45,10 @@ app = FastAPI(
     },
 )
 
-
+app.include_router(auth.router)
 app.include_router(users.router)
+app.include_router(tags.router)
+app.include_router(bookmarks.router)
 
 
 @app.exception_handler(RequestValidationError)
